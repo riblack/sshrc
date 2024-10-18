@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-function sshrc() {
-    local SSHHOME=${SSHHOME:=~}
+function _sshrc() {
+    #local SSHHOME=${SSHHOME:=~}
+    local SSHHOME=~
     if [ -f $SSHHOME/.sshrc ]; then
         local files=.sshrc
         if [ -d $SSHHOME/.sshrc.d ]; then
@@ -15,8 +16,9 @@ function sshrc() {
             WELCOME_MSG="
                 if [ ! -e ~/.hushlogin ]; then
                     if [ -e /etc/motd ]; then cat /etc/motd; fi
-                    if [ -e /etc/update-motd.d ]; then run-parts /etc/update-motd.d/ 2>/dev/null; fi
-                    last -F \$USER 2>/dev/null | grep -v 'still logged in' | head -n1 | awk '{print \"Last login:\",\$4,\$5,\$6,\$7,\$8,\"from\",\$3;}'
+                    #if [ -e /etc/update-motd.d ]; then run-parts /etc/update-motd.d/ 2>/dev/null; fi
+                    #last -F \$USER 2>/dev/null | grep -v 'still logged in' 2>/dev/null | head -n1  | awk '{print \"Last login:\",\$4,\$5,\$6,\$7,\$8,\"from\",\$3;}'
+                    #test -x /etc/update-motd.d/00-header && /etc/update-motd.d/00-header
                 fi
                 "
         else
@@ -94,4 +96,4 @@ function sshrc_parse() {
 
 command -v openssl >/dev/null 2>&1 || { echo >&2 "sshrc requires openssl to be installed locally, but it's not. Aborting."; exit 1; }
 sshrc_parse "$@"
-sshrc
+_sshrc
